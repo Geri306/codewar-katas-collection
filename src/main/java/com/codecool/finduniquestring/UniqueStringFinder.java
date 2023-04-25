@@ -1,15 +1,14 @@
-package com.codecool.abfindtheuniquestring;
+package com.codecool.finduniquestring;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
-public class Main {
-    public static void main(String[] args) {
-        System.out.println("kata: find the unique string: ");
-    }
-
-
-    public static String findUniq(String[] arr) {
+public class UniqueStringFinder {
+    /*public String findUnique(String[] arr) {
         Map<Character, Integer> charCounts = new HashMap<>();
 
         for (String str : arr) {
@@ -37,6 +36,17 @@ public class Main {
         }
 
         return null;
-    }
+    }*/
 
+    public String findUnique(String[] strings) {
+        return Arrays.stream(strings)
+                .map(String::toLowerCase)
+                .map(string -> string.replaceAll("\\s", ""))
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+                .entrySet().stream()
+                .filter(e -> e.getValue() == 1)
+                .map(Map.Entry::getKey)
+                .findFirst()
+                .orElseThrow(NoSuchElementException::new);
+    }
 }
